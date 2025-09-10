@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interaktivni zadaci – GeoGebra + MathJax</title>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root{--maxw:1000px;--r:16px}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:#111;
+      background-image:url("slika.jpg");
+      background-size:cover;
+      background-position:center;
+      background-attachment:fixed;
+      background-repeat:no-repeat;
+    }
+    .overlay{background:rgba(255,255,255,0.86);min-height:100vh}
+    header{position:sticky;top:0;background:rgba(255,255,255,.96);border-bottom:1px solid #e8e8ef;z-index:10;backdrop-filter:saturate(1.2) blur(4px)}
+    header .inner{max-width:var(--maxw);margin:0 auto;padding:14px 16px}
+    header h1{margin:0;font-size:22px;text-align:center}
+    main{max-width:var(--maxw);margin:0 auto;padding:24px 16px 56px}
+    .task{background:#fff;border:1px solid #e8e8ef;border-radius:var(--r);box-shadow:0 10px 20px rgba(10,10,20,.04);padding:16px;margin:18px 0}
+    .task h2{margin:0 0 6px;font-size:18px}
+    .statement{margin:6px 0 12px;line-height:1.65}
+    .ggb{width:100%;height:520px;border:1px solid #ddd;border-radius:14px;overflow:hidden;background:#fafafa}
+    .controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .ctrl{appearance:none;border:1px solid #d7d7e0;background:#fff;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:500}
+    .ctrl:hover{background:#f2f2f7}
+    .ctrl.active{background:#ebf6ff;border-color:#b8dbff}
+    .results{margin-top:10px;font-size:15px}
+    .note{font-size:13px;color:#555;margin-top:6px}
+    code{background:#f2f4f8;padding:2px 6px;border-radius:6px}
+    .accent{color:#800000;font-weight:600}
+    /* --- Postupak blokovi --- */
+    details.work{border:1px solid #e8e8ef;border-radius:12px;padding:10px 12px;margin-top:12px;background:#fbfbfe}
+    details.work summary{cursor:pointer;font-weight:700}
+    details.work[open]{background:#f8fbff;border-color:#dbeafe}
+    details.work .math{margin-top:8px;line-height:1.8}
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <header>
+      <div class="inner">
+        <h1>Interaktivni zadaci – GeoGebra + MathJax</h1>
+      </div>
+    </header>
+
+    <main>
+      <!-- ZADATAK 1 -->
+      <section class="task" id="z1">
+        <h2>Zadatak 1: Izračunati integral</h2>
+        <div class="statement">
+          <p><span class="accent">Neka je dato:</span></p>
+          <p>\[
+            I=\int \frac{dx}{\big(\sin x+\cos x+2\big)^2}.
+          \]</p>
+          <p><span class="accent">Smernice.</span> Upotrebiti Weierstrass-ovu zamenu
+          \(t=\tan\!\frac{x}{2}\) uz relacije
+          \(\displaystyle \sin x=\frac{2t}{1+t^2},\ \cos x=\frac{1-t^2}{1+t^2},\ dx=\frac{2\,dt}{1+t^2}\).</p>
+        </div>
+
+        <div id="ggb1" class="ggb"></div>
+        <div class="controls">
+          <button class="ctrl" id="z1-f">Prikaži \( f(x) \)</button>
+          <button class="ctrl" id="z1-s1">Korak 1: Substitucija</button>
+          <button class="ctrl" id="z1-s2">Korak 2: Uređivanje</button>
+          <button class="ctrl" id="z1-res">Rezultat</button>
+          <button class="ctrl" id="z1-reset">Reset</button>
+        </div>
+        <div class="results" id="z1-out"></div>
+
+        <details class="work">
+          <summary>Postupak (detaljno)</summary>
+          <div class="math">
+\[
+\begin{aligned}
+I&=\int \frac{dx}{(\sin x+\cos x+2)^2},\qquad t=\tan\frac{x}{2},\\[2pt]
+\sin x&=\frac{2t}{1+t^2},\ \ \cos x=\frac{1-t^2}{1+t^2},\ \ dx=\frac{2\,dt}{1+t^2}.\\[4pt]
+\sin x+\cos x+2&=\frac{2t+1-t^2}{1+t^2}+2=\frac{t^2+2t+3}{1+t^2}.\\[4pt]
+\Rightarrow\quad
+I&=\int \frac{\frac{2\,dt}{1+t^2}}{\Big(\frac{t^2+2t+3}{1+t^2}\Big)^2}
+=2\int \frac{1+t^2}{(t^2+2t+3)^2}\,dt
+=2\int \frac{t^2+1}{(t^2+2t+3)^2}\,dt.
+\end{aligned}
+\]
+Sredimo kvadrat kompletiranjem: \(t^2+2t+3=(t+1)^2+2\).
+Neka \(p=t+1\Rightarrow t=p-1,\ dt=dp\).
+\[
+I=2\int\frac{p^2-2p+2}{(p^2+2)^2}\,dp
+=2\!\left(\int\frac{dp}{p^2+2}-2\int\frac{p\,dp}{(p^2+2)^2}\right).
+\]
+Drugi integral: stavimo \(u=p^2+2\Rightarrow du=2p\,dp\).
+\[
+\int\frac{p\,dp}{(p^2+2)^2}=\frac12\int u^{-2}\,du=-\frac{1}{2u}=-\frac{1}{2(p^2+2)}.
+\]
+Prvi: \(\displaystyle \int \frac{dp}{p^2+2}=\frac{1}{\sqrt2}\arctan\!\frac{p}{\sqrt2}\).
+Zато:
+\[
+\boxed{\,I=\sqrt2\,\arctan\!\frac{p}{\sqrt2}+\frac{2}{p^2+2}+C\,}.
+\]
+Vraћање: \(p=t+1=\tan\!\frac{x}{2}+1\).
+\[
+\boxed{\,I=\sqrt2\,\arctan\!\frac{\tan(x/2)+1}{\sqrt2}+\frac{2}{(\tan(x/2)+1)^2+2}+C}.
+\]
+          </div>
+        </details>
+
+        <div class="note">Graf prikazuje integrand; detaljni koraci су у „Postupak“ секцији.</div>
+      </section>
+
+      <!-- ZADATAK 2 -->
+      <section class="task" id="z2">
+        <h2>Primer 2: Tangenta na elipsu i površina trougla</h2>
+        <div class="statement">
+          <p><span class="accent">Elipsa:</span> \(\displaystyle \frac{x^2}{9}+\frac{y^2}{4}=1\),
+          tačka \(A\!\left(\tfrac{3}{2}, \sqrt{3}\right)\).</p>
+          <p>Naći tangentu u \(A\), preseke sa osama i površinu trougla koji zatвара sa osama.</p>
+        </div>
+        <div id="ggb2" class="ggb"></div>
+        <div class="controls">
+          <button class="ctrl" id="z2-ell">Elipsa</button>
+          <button class="ctrl" id="z2-A">Tačka \(A\)</button>
+          <button class="ctrl" id="z2-tan">Tangenta u \(A\)</button>
+          <button class="ctrl" id="z2-area">Prikaži trougao</button>
+          <button class="ctrl" id="z2-reset">Reset</button>
+        </div>
+        <div class="results" id="z2-out"></div>
+
+        <details class="work">
+          <summary>Postupak (detaljno)</summary>
+          <div class="math">
+\[
+\frac{x^2}{9}+\frac{y^2}{4}=1\ \Rightarrow\ \frac{2x}{9}+\frac{2y\,y'}{4}=0
+\ \Rightarrow\ y'=-\frac{4x}{9y}.
+\]
+U \(A(3/2,\sqrt3)\): \(\displaystyle k=y'_A=-\frac{4\cdot\frac32}{9\sqrt3}=-\frac{2}{3\sqrt3}\).
+Tangenta:
+\[
+y-\sqrt3=k\,(x-\tfrac32)\ \Longleftrightarrow\ 2x+3\sqrt3\,y=12.
+\]
+Preseci: za \(y=0\Rightarrow x=6\); za \(x=0\Rightarrow y=\frac{4}{\sqrt3}\).
+Površina trougla \(OBC\):
+\[
+P=\frac12\cdot 6\cdot\frac{4}{\sqrt3}=\frac{12}{\sqrt3}.
+\]
+          </div>
+        </details>
+      </section>
+
+      <!-- ZADATAK 3 -->
+      <section class="task" id="z3">
+        <h2>Primer 3: Površina obrtnog tela</h2>
+        <div class="statement">
+          <p>Obrtati oko \(x\)-ose deo u \([0,1]\) između \(y=x\) i \(y=x^3\).</p>
+        </div>
+        <div id="ggb3" class="ggb"></div>
+        <div class="controls">
+          <button class="ctrl" id="z3-f1">Prikaži \(y=x\)</button>
+          <button class="ctrl" id="z3-f2">Prikaži \(y=x^3\)</button>
+          <button class="ctrl" id="z3-s1">Izračunaj \(S_1\)</button>
+          <button class="ctrl" id="z3-s2">Izračunaj \(S_2\)</button>
+          <button class="ctrl" id="z3-all">Ukupno \(S\)</button>
+          <button class="ctrl" id="z3-reset">Reset</button>
+        </div>
+        <div class="results" id="z3-out"></div>
+
+        <details class="work">
+          <summary>Postupak (detaljno)</summary>
+          <div class="math">
+\[
+S_1=2\pi\!\int_0^1 x\sqrt{1+(1)^2}\,dx
+=2\pi\sqrt2\!\int_0^1 x\,dx
+=\pi\sqrt2.
+\]
+\[
+S_2=2\pi\!\int_0^1 x^3\sqrt{1+9x^4}\,dx,\quad
+t=1+9x^4,\ dt=36x^3dx.
+\]
+\[
+S_2=\frac{2\pi}{36}\int_{t=1}^{10}\! \sqrt{t}\,dt
+=\frac{\pi}{27}\cdot\frac{2}{3}\big[t^{3/2}\big]_1^{10}
+=\frac{\pi}{27}\big(10\sqrt{10}-1\big).
+\]
+\[
+\boxed{\,S=S_1+S_2=\pi\sqrt2+\frac{\pi}{27}\,(10\sqrt{10}-1).\,}
+\]
+          </div>
+        </details>
+      </section>
+
+      <!-- ZADATAK 4 -->
+      <section class="task" id="z4">
+        <h2>Primer 4: Oblast definisanosti funkcije</h2>
+        <div class="statement">
+          <p>\(\displaystyle f(x,y)=\ln\sqrt{\,9y-x^2y-y^3\,}\).</p>
+          <p>Naći domenu funkcije i vizuelizovati regione.</p>
+        </div>
+        <div id="ggb4" class="ggb"></div>
+        <div class="controls">
+          <button class="ctrl" id="z4-circ">Krug \(x^2+y^2=9\)</button>
+          <button class="ctrl" id="z4-r1">Region \(y>0,\ x^2+y^2<9\)</button>
+          <button class="ctrl" id="z4-r2">Region \(y<0,\ x^2+y^2>9\)</button>
+          <button class="ctrl" id="z4-reset">Reset</button>
+        </div>
+        <div class="results" id="z4-out"></div>
+
+        <details class="work">
+          <summary>Postupak (detaljno)</summary>
+          <div class="math">
+\[
+9y-x^2y-y^3>0\ \Longleftrightarrow\ y(9-x^2-y^2)>0.
+\]
+To je unija dva regiona:
+\[
+\boxed{\,y>0,\ \ x^2+y^2<9\,}\quad\text{i}\quad
+\boxed{\,y<0,\ \ x^2+y^2>9\,}.
+\]
+          </div>
+        </details>
+      </section>
+
+      <!-- ZADATAK 5 -->
+      <section class="task" id="z5">
+        <h2>Zadatak 5 – Parcijalne izvedenice i dodatno</h2>
+        <div class="statement">
+          (a) Za \(f(x,y)=x\,\arctan(y/x)\) naći \(\partial^2 f/\partial y\,\partial x\) u \((1,\sqrt3)\).<br/>
+          (b) Dodatно: \(\displaystyle \int_{1/e}^{e} x\ln x\,dx\) и дужина \(x=2\cos t,\ y=2\sin t,\ t\in[\pi/2,\pi]\).
+        </div>
+        <div id="ggb5" class="ggb"></div>
+        <div class="controls">
+          <button class="ctrl" id="z5-f">Prikaži f(x,y)</button>
+          <button class="ctrl" id="z5-pt">Označi tačku (1,√3)</button>
+          <button class="ctrl" id="z5-der">Prikaži rezultat izvedenice</button>
+          <button class="ctrl" id="z5-reset">Reset</button>
+        </div>
+        <div class="results" id="z5-out"></div>
+
+        <details class="work">
+          <summary>Postupak (detaljno)</summary>
+          <div class="math">
+<b>(a)</b>
+\[
+f_x=\arctan\frac{y}{x}-\frac{xy}{x^2+y^2},\qquad
+f_{yx}=\frac{x^2-(x^2+y^2)-2y^2}{(x^2+y^2)^2}\cdot x
+=\frac{x^2-(x^2-y^2)}{(x^2+y^2)^2}\,x
+=\frac{x(x^2+y^2)-x(x^2-y^2)}{(x^2+y^2)^2}
+=\frac{2xy^2}{(x^2+y^2)^2}.
+\]
+U \((1,\sqrt3)\): \(\displaystyle \frac{2\cdot1\cdot3}{(1+3)^2}=\frac{6}{16}=\boxed{\tfrac{3}{8}}\).
+<br/><br/>
+<b>(b1)</b> Интеграција делова:
+\[
+u=\ln x,\ dv=x\,dx\Rightarrow du=\frac{dx}{x},\ v=\frac{x^2}{2}.
+\]
+\[
+\int x\ln x\,dx=\frac{x^2}{2}\ln x-\int \frac{x^2}{2}\cdot\frac{dx}{x}
+=\frac{x^2}{2}\ln x-\frac{x^2}{4}+C.
+\]
+\[
+\int_{1/e}^{e}\! x\ln x\,dx
+=\left[\frac{x^2}{2}\ln x-\frac{x^2}{4}\right]_{1/e}^{e}
+=\left(\frac{e^2}{2}\cdot 1-\frac{e^2}{4}\right)
+-\left(\frac{1}{2e^2}\cdot(-1)-\frac{1}{4e^2}\right)
+=\frac{e^2}{4}+\frac{3}{4e^2}.
+\]
+<b>(b2)</b> Дужина лука за \(x=2\cos t,\ y=2\sin t\):
+\[
+L=\int_{\pi/2}^{\pi}\!\sqrt{\dot x^2+\dot y^2}\,dt
+=\int_{\pi/2}^{\pi}\!\sqrt{(-2\sin t)^2+(2\cos t)^2}\,dt
+=\int_{\pi/2}^{\pi}\!2\,dt=2\cdot\frac{\pi}{2}=\boxed{\pi}.
+\]
+          </div>
+        </details>
+      </section>
+    </main>
+  </div><!-- /.overlay -->
+
+  <script>
+    function toggle(b,on){b.classList.toggle('active',!!on)}
+
+    function init(container, appName, onLoad, forceEnglish){
+      var div=document.getElementById(container);
+      var app=new GGBApplet({
+        appName:appName,
+        width:Math.max(360,div.clientWidth),
+        height:520,
+        showToolBar:false,
+        showAlgebraInput:false,
+        showMenuBar:false,
+        allowStyleBar:false,
+        showResetIcon:false,
+        language: forceEnglish ? "en" : undefined,
+        appletOnLoad:onLoad
+      }, true);
+      app.inject(container);
+    }
+
+    /* Z1 */
+    function setupZ1(api){
+      api.setCoordSystem(-6,6,-1,3);
+      api.setGridVisible(true);
+      api.evalCommand('f(x) = 1 / ( (sin(x) + cos(x) + 2)^2 )');
+      api.setVisible('f', false);
+
+      api.evalCommand('T1 = Text("t = tan(x/2),\\\\ sin x = 2t/(1+t^2),\\\\ cos x = (1-t^2)/(1+t^2),\\\\ dx = 2\\,dt/(1+t^2)",(-5.7,2.6))');
+      api.evalCommand('T2 = Text("I = 2 \\int \\frac{t^2+1}{(t^2+2t+3)^2} \\, dt",(-5.7,2.2))');
+      api.evalCommand('T3 = Text("I = \\\\sqrt{2}\\,\\arctan\\!\\left(\\frac{t+1}{\\sqrt{2}}\\right) + \\frac{2}{(t+1)^2+2} + C",(-5.7,1.8))');
+      api.setVisible('T1', false); api.setVisible('T2', false); api.setVisible('T3', false);
+
+      const bF = document.getElementById('z1-f');
+      const b1 = document.getElementById('z1-s1');
+      const b2 = document.getElementById('z1-s2');
+      const bR = document.getElementById('z1-res');
+      const bX = document.getElementById('z1-reset');
+      const out = document.getElementById('z1-out');
+
+      bF.onclick = function(){ var v=!api.getVisible('f'); api.setVisible('f',v); toggle(bF,v); };
+      b1.onclick = function(){ var v=!api.getVisible('T1'); api.setVisible('T1',v); toggle(b1,v); if(v){ out.innerHTML="Primena zamene \\(t=\\tan\\tfrac{x}{2}\\)."; MathJax.typesetPromise(); }};
+      b2.onclick = function(){ var v=!api.getVisible('T2'); api.setVisible('T2',v); toggle(b2,v); };
+      bR.onclick = function(){ var v=!api.getVisible('T3'); api.setVisible('T3',v); toggle(bR,v); out.innerHTML = "Konačan izraz u promenljivoj \\(t\\). Za povratak koristi \\(t=\\tan(x/2)\\)."; MathJax.typesetPromise(); };
+      bX.onclick = function(){ ['f','T1','T2','T3'].forEach(n=>api.setVisible(n,false)); [bF,b1,b2,bR].forEach(bt=>toggle(bt,false)); out.textContent=''; };
+    }
+
+    /* Z2 */
+    function setupZ2(api){
+      api.setCoordSystem(-5,7,-3.5,5);
+      api.setGridVisible(true); api.setAxesVisible(true,true,true);
+
+      const rt3 = Math.sqrt(3);
+      const Ax = 1.5, Ay = rt3;   // A = (3/2, √3)
+      const Cx = 6;               // C = (6, 0)
+      const By = 4/rt3;           // B = (0, 4/√3)
+
+      api.evalCommand('c: x^2/9 + y^2/4 = 1'); api.setVisible('c', false);
+      api.evalCommand(`A = (${Ax}, ${Ay})`);   api.setVisible('A', false);
+
+      const bE  = document.getElementById('z2-ell');
+      const bA  = document.getElementById('z2-A');
+      const bT  = document.getElementById('z2-tan');
+      const bP  = document.getElementById('z2-area');
+      const bX  = document.getElementById('z2-reset');
+      const out = document.getElementById('z2-out');
+
+      const on  = (btn,v)=>btn.classList.toggle('active',!!v);
+      const hide= name => { try{ api.setVisible(name,false); }catch(e){} };
+      const del = name => { try{ api.evalCommand('Delete(' + name + ')'); }catch(e){} };
+
+      bE.onclick = function(){ const v = !api.getVisible('c'); api.setVisible('c', v); on(bE, v); };
+      bA.onclick = function(){ const v = !api.getVisible('A'); api.setVisible('A', v); on(bA, v); };
+
+      bT.onclick = function(){
+        ['B','C','t'].forEach(del);
+        api.evalCommand(`B = (0, ${By})`);
+        api.evalCommand(`C = (${Cx}, 0)`);
+        api.evalCommand('t: 2 x + 3 sqrt(3) y = 12');
+        try{
+          api.setColor('t', 0, 0, 220);
+          api.setLineThickness('t', 5);
+          api.setLabelVisible('t', false);
+          api.setPointSize('B', 6); api.setPointSize('C', 6);
+          api.setColor('B', 230, 40, 40); api.setColor('C', 230, 40, 40);
+          api.setLabelVisible('B', false); api.setLabelVisible('C', false);
+        }catch(e){}
+        ['B','C','t'].forEach(n => { try{ api.setVisible(n, true); }catch(e){} });
+        on(bT, true);
+        out.innerHTML = 'Tangenta: \\(2x + 3\\sqrt{3}\\,y = 12\\), preseci \\(B=(0,\\tfrac{4}{\\sqrt{3}})\\), \\(C=(6,0)\\).';
+        MathJax.typesetPromise();
+      };
+
+      bP.onclick = function(){
+        ['O','B','C'].forEach(del);
+        api.evalCommand('O = (0,0)');
+        api.evalCommand(`B = (0, ${By})`);
+        api.evalCommand(`C = (${Cx}, 0)`);
+        try{
+          ['O','B','C'].forEach(p=>{
+            api.setPointSize(p, 7);
+            api.setColor(p, 230, 40, 40);
+            api.setLabelVisible(p, false);
+            api.setVisible(p, true);
+          });
+        }catch(e){}
+        on(bP, true);
+        const area = 0.5 * Cx * By;
+        out.innerHTML = 'Označene su tačke \\(O\\), \\(B\\), \\(C\\). Površina = ' + area.toFixed(4) + ' = \\(\\tfrac{12}{\\sqrt{3}}\\).';
+        MathJax.typesetPromise();
+      };
+
+      bX.onclick = function(){
+        ['c','A','t','B','C','O'].forEach(hide);
+        [bE,bA,bT,bP].forEach(btn=>btn.classList.remove('active'));
+        out.textContent='';
+      };
+    }
+
+    /* Z3 */
+    function setupZ3(api){
+      api.setCoordSystem(-0.2,1.2,-0.2,1.6); api.setGridVisible(true);
+      api.evalCommand('f(x) = x');   api.setVisible('f', false);
+      api.evalCommand('g(x) = x^3'); api.setVisible('g', false);
+
+      api.evalCommand('df(x) = Derivative(f)');
+      api.evalCommand('dg(x) = Derivative(g)');
+      api.evalCommand('S1 = 2*pi*Integral(f(x)*sqrt(1+(df(x))^2), 0, 1)');
+      api.evalCommand('S2 = 2*pi*Integral(g(x)*sqrt(1+(dg(x))^2), 0, 1)');
+
+      const b1  = document.getElementById('z3-f1');
+      const b2  = document.getElementById('z3-f2');
+      const bS1 = document.getElementById('z3-s1');
+      const bS2 = document.getElementById('z3-s2');
+      const bAll= document.getElementById('z3-all');
+      const bX  = document.getElementById('z3-reset');
+      const out = document.getElementById('z3-out');
+
+      b1.onclick=function(){ var v=!api.getVisible('f'); api.setVisible('f',v); toggle(b1,v); };
+      b2.onclick=function(){ var v=!api.getVisible('g'); api.setVisible('g',v); toggle(b2,v); };
+      bS1.onclick=function(){ var s1 = api.getValue('S1'); out.innerHTML = 'S\u2081 = ' + s1.toFixed(6); MathJax.typesetPromise(); toggle(bS1,true); };
+      bS2.onclick=function(){ var s2 = api.getValue('S2'); out.innerHTML += (out.innerHTML ? ' | ' : '') + 'S\u2082 = ' + s2.toFixed(6); MathJax.typesetPromise(); toggle(bS2,true); };
+      bAll.onclick=function(){ var s1 = api.getValue('S1'), s2 = api.getValue('S2'); out.innerHTML = 'Ukupno: S = ' + (s1+s2).toFixed(6); MathJax.typesetPromise(); toggle(bAll,true); };
+      bX.onclick=function(){ ['f','g'].forEach(n=>api.setVisible(n,false)); [b1,b2,bS1,bS2,bAll].forEach(bt=>toggle(bt,false)); out.textContent=''; };
+    }
+
+    /* Z4 */
+    function setupZ4(api){
+      api.setCoordSystem(-5.5,5.5,-5.5,5.5); api.setGridVisible(true);
+      api.evalCommand('c: x^2 + y^2 = 9'); api.setVisible('c', false);
+      api.evalCommand('R1: (y>0) && (x^2 + y^2 < 9)'); api.setVisible('R1', false); try{api.setFilling('R1',0.25);}catch(e){}
+      api.evalCommand('R2: (y<0) && (x^2 + y^2 > 9)'); api.setVisible('R2', false); try{api.setFilling('R2',0.25);}catch(e){}
+
+      const bC  = document.getElementById('z4-circ');
+      const bR1 = document.getElementById('z4-r1');
+      const bR2 = document.getElementById('z4-r2');
+      const bX  = document.getElementById('z4-reset');
+      const out = document.getElementById('z4-out');
+
+      bC.onclick=function(){ var v=!api.getVisible('c'); api.setVisible('c',v); toggle(bC,v); };
+      bR1.onclick=function(){ var v=!api.getVisible('R1'); api.setVisible('R1',v); toggle(bR1,v); if(v){ out.innerHTML='Region \\(y>0\\), unutar kruga \\(r=3\\).'; MathJax.typesetPromise(); } };
+      bR2.onclick=function(){ var v=!api.getVisible('R2'); api.setVisible('R2',v); toggle(bR2,v); if(v){ out.innerHTML='Region \\(y<0\\), izvan kruga \\(r=3\\).'; MathJax.typesetPromise(); } };
+      bX.onclick=function(){ ['c','R1','R2'].forEach(n=>api.setVisible(n,false)); [bC,bR1,bR2].forEach(bt=>toggle(bt,false)); out.textContent=''; };
+    }
+
+    /* Z5 */
+    function setupZ5(api){
+      api.evalCommand('f(x,y) = x * atan(y/x)'); api.setVisible('f', false);
+      api.evalCommand('A3D = (1, sqrt(3), f(1, sqrt(3)))'); api.setVisible('A3D', false);
+      api.evalCommand('T5 = Text("(∂²f/∂y∂x)(1,√3) = 3/8", (0,0,0))'); api.setVisible('T5', false);
+
+      var bF=document.getElementById('z5-f');
+      var bP=document.getElementById('z5-pt');
+      var bD=document.getElementById('z5-der');
+      var bX=document.getElementById('z5-reset');
+      var out=document.getElementById('z5-out');
+
+      bF.onclick=function(){var v=!api.getVisible('f'); api.setVisible('f',v); toggle(bF,v); if(v) out.textContent='Površ f(x,y)=x·atan(y/x) prikazana.'};
+      bP.onclick=function(){var v=!api.getVisible('A3D'); api.setVisible('A3D',v); toggle(bP,v); if(v) out.textContent='Označena tačka (1,√3, f(1,√3)).';};
+      bD.onclick=function(){var v=!api.getVisible('T5'); api.setVisible('T5',v); toggle(bD,v); if(v) out.innerHTML='Rezultat: (∂²f/∂y∂x)(1,√3)=3/8.';};
+      bX.onclick=function(){ ['f','A3D','T5'].forEach(n=>api.setVisible(n,false)); [bF,bP,bD].forEach(bt=>toggle(bt,false)); out.textContent=''; };
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+      init('ggb1','graphing',setupZ1, true);
+      init('ggb2','graphing',setupZ2, true);
+      init('ggb3','graphing',setupZ3, true);
+      init('ggb4','graphing',setupZ4, true);
+      init('ggb5','3d',      setupZ5, false);
+    });
+  </script>
+</body>
+</html>
